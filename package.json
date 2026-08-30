@@ -1,0 +1,20 @@
+{
+  "name": "dungeon-familiar",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "assets:extract": "python3 tools/unity-extract.py --out build --copy-png",
+    "assets:copy": "node scripts/copy-assets.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4"
+  }
+}

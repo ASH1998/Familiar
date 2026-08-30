@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dungeon Familiar</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main id="app">
+      <section id="world">
+        <header id="topbar">
+          <span id="phase">YOUR TURN</span>
+          <span id="round">Round 1</span>
+          <span id="actions"></span>
+          <span id="progress"></span>
+          <span id="hazard"></span>
+          <span id="webmcp-status" title="WebMCP availability"></span>
+        </header>
+        <div id="stage-wrap"><div id="stage-fit"><div id="stage"></div><div id="tool-banner"></div></div></div>
+      </section>
+
+      <aside id="panel">
+        <div id="familiar-head">
+          <div id="portrait-box"><div id="portrait"></div></div>
+          <div>
+            <h1>The Familiar</h1>
+            <div id="energy-row">
+              <div id="energy"></div>
+              <span id="energy-label">2 energy</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="tabs"></div>
+        <div id="tools"></div>
+        <div id="log"></div>
+
+        <div id="controls">
+          <input id="say" type="text" placeholder="Describe what you see…" autocomplete="off" />
+          <button id="end-turn">End turn</button>
+        </div>
+      </aside>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
