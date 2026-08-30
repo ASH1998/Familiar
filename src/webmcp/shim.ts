@@ -51,6 +51,7 @@ export async function detectUnregisterStrategy(): Promise<UnregisterStrategy> {
     );
     controller.abort();
     // If abort worked, the name is free and re-registering succeeds.
+    const cleanupController = new AbortController();
     await ctx.registerTool(
       {
         name: probeName,
@@ -58,8 +59,11 @@ export async function detectUnregisterStrategy(): Promise<UnregisterStrategy> {
         annotations: { readOnlyHint: true },
         execute: () => "probe",
       },
-      { signal: new AbortController().signal },
+      { signal: cleanupController.signal },
     );
+    // The second registration proves the name was released; release the proof as well.
+    // Otherwise an internal __df_probe_* capability leaks into the real client's tool list.
+    cleanupController.abort();
     return "abort";
   } catch {
     return "none";
