@@ -13,8 +13,9 @@
     "assets:copy": "node scripts/copy-assets.mjs"
   },
   "devDependencies": {
+    "@openai/sites-vite-plugin": "^0.2.0",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10",
+    "vite": "^8.2.2",
     "vitest": "^2.1.4"
   }
 }
