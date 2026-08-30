@@ -1,0 +1,333 @@
+{
+ "portal_ice": {
+  "src": "/art/portal_ice.png",
+  "w": 64,
+  "h": 64,
+  "frames": 7
+ },
+ "portal_fire": {
+  "src": "/art/portal_fire.png",
+  "w": 64,
+  "h": 64,
+  "frames": 7
+ },
+ "portal_nature": {
+  "src": "/art/portal_nature.png",
+  "w": 64,
+  "h": 64,
+  "frames": 7
+ },
+ "tome_water": {
+  "src": "/art/tome_water.png",
+  "w": 16,
+  "h": 16,
+  "frames": 1
+ },
+ "tome_fire": {
+  "src": "/art/tome_fire.png",
+  "w": 16,
+  "h": 16,
+  "frames": 1
+ },
+ "tome_earth": {
+  "src": "/art/tome_earth.png",
+  "w": 16,
+  "h": 16,
+  "frames": 1
+ },
+ "floor_1": {
+  "src": "/art/floor_1.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "floor_2": {
+  "src": "/art/floor_2.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "floor_3": {
+  "src": "/art/floor_3.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "wall": {
+  "src": "/art/wall.png",
+  "w": 32,
+  "h": 64,
+  "frames": 1
+ },
+ "wall_alt": {
+  "src": "/art/wall_alt.png",
+  "w": 32,
+  "h": 64,
+  "frames": 1
+ },
+ "dungeon_door": {
+  "src": "/art/dungeon_door.png",
+  "w": 32,
+  "h": 48,
+  "frames": 1
+ },
+ "brazier": {
+  "src": "/art/brazier.png",
+  "w": 32,
+  "h": 32,
+  "frames": 3
+ },
+ "statue_1": {
+  "src": "/art/statue_1.png",
+  "w": 32,
+  "h": 48,
+  "frames": 1
+ },
+ "statue_2": {
+  "src": "/art/statue_2.png",
+  "w": 32,
+  "h": 48,
+  "frames": 1
+ },
+ "statue_3": {
+  "src": "/art/statue_3.png",
+  "w": 32,
+  "h": 48,
+  "frames": 1
+ },
+ "bookshelf": {
+  "src": "/art/bookshelf.png",
+  "w": 48,
+  "h": 96,
+  "frames": 1
+ },
+ "bridge": {
+  "src": "/art/bridge.png",
+  "w": 64,
+  "h": 64,
+  "frames": 1
+ },
+ "prison": {
+  "src": "/art/prison.png",
+  "w": 64,
+  "h": 64,
+  "frames": 7
+ },
+ "player_hit": {
+  "src": "/art/player_hit.png",
+  "w": 48,
+  "h": 48,
+  "grid": [
+   4,
+   2
+  ],
+  "clip": [
+   4,
+   5
+  ],
+  "fps": 10
+ },
+ "wight_walk": {
+  "src": "/art/wight_walk.png",
+  "w": 32,
+  "h": 32,
+  "frames": 9,
+  "fps": 9
+ },
+ "wight_idle": {
+  "src": "/art/wight_idle.png",
+  "w": 32,
+  "h": 32,
+  "frames": 9,
+  "fps": 6
+ },
+ "wight_attack": {
+  "src": "/art/wight_attack.png",
+  "w": 32,
+  "h": 32,
+  "frames": 9,
+  "fps": 12
+ },
+ "coffin_1": {
+  "src": "/art/coffin_1.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "coffin_2": {
+  "src": "/art/coffin_2.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "skull_1": {
+  "src": "/art/skull_1.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "skulls": {
+  "src": "/art/skulls.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "rubble": {
+  "src": "/art/rubble.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "bone_pile": {
+  "src": "/art/bone_pile.png",
+  "w": 16,
+  "h": 64,
+  "frames": 1
+ },
+ "pillar": {
+  "src": "/art/pillar.png",
+  "w": 64,
+  "h": 64,
+  "frames": 1
+ },
+ "pillar_fallen": {
+  "src": "/art/pillar_fallen.png",
+  "w": 64,
+  "h": 64,
+  "frames": 1
+ },
+ "rock_pile": {
+  "src": "/art/rock_pile.png",
+  "w": 64,
+  "h": 64,
+  "frames": 1
+ },
+ "stone": {
+  "src": "/art/stone.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "torch": {
+  "src": "/art/torch.png",
+  "w": 16,
+  "h": 16,
+  "frames": 4
+ },
+ "lever": {
+  "src": "/art/lever.png",
+  "w": 16,
+  "h": 16,
+  "frames": 2
+ },
+ "player_idle": {
+  "src": "/art/player_idle.png",
+  "w": 48,
+  "h": 48,
+  "grid": [
+   4,
+   4
+  ],
+  "clip": [
+   8,
+   9,
+   10,
+   11
+  ],
+  "fps": 12
+ },
+ "familiar_beholder": {
+  "src": "/art/familiar_beholder.png",
+  "w": 32,
+  "h": 32,
+  "grid": [
+   4,
+   4
+  ],
+  "clip": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "fps": 12
+ },
+ "familiar_fairy": {
+  "src": "/art/familiar_fairy.png",
+  "w": 16,
+  "h": 16,
+  "grid": [
+   4,
+   4
+  ],
+  "clip": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "fps": 12
+ },
+ "familiar_imp": {
+  "src": "/art/familiar_imp.png",
+  "w": 16,
+  "h": 16,
+  "grid": [
+   4,
+   4
+  ],
+  "clip": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "fps": 12
+ },
+ "familiar_dragon": {
+  "src": "/art/familiar_dragon.png",
+  "w": 32,
+  "h": 32,
+  "grid": [
+   4,
+   4
+  ],
+  "clip": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "fps": 12
+ },
+ "orb_energy": {
+  "src": "/art/orb_energy.png",
+  "w": 48,
+  "h": 48,
+  "frames": 1
+ },
+ "orb_frame": {
+  "src": "/art/orb_frame.png",
+  "w": 48,
+  "h": 48,
+  "frames": 1
+ },
+ "spellbook": {
+  "src": "/art/spellbook.png",
+  "w": 0,
+  "h": 0,
+  "frames": 1
+ },
+ "banner": {
+  "src": "/art/banner.png",
+  "w": 48,
+  "h": 32,
+  "frames": 1
+ },
+ "familiar_portrait": {
+  "src": "/art/familiar_portrait.png",
+  "w": 18,
+  "h": 18,
+  "frames": 1
+ }
+}
