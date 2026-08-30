@@ -77,6 +77,30 @@ Plan: [PLAN.md](PLAN.md) · Assets: [ASSETS-MAP.md](ASSETS-MAP.md) · Setup: [RE
 
 ## Log
 
+### 2026-08-30 — Familiar Chamber: overlap fix + staging
+
+**The prison overlapped the exit door.** Both sat in the centre column: the door is drawn into
+the back wall spanning y 32–128, and the 64px prison anchored at row 2 spanned y 64–192 — a full
+tile of overlap. Moved the prison to row 3, where it starts exactly where the door ends
+(verified: `prisonTop 87 === doorBottom 87`).
+
+**Staged the finale properly.** It was the blandest room in the game, which is backwards for the
+place the whole thing has been walking towards. Now 29 props: coffins along both walls, chains
+hanging near the prison, cobwebs in the corners, bubbling cauldrons, bone piles, rubble.
+
+New sprites: `chains`, `cobweb`, `cauldron`. Two had wrong dimensions in my first pass — cobweb
+is 32×32 not 16×16, and the cauldron is 64×16, i.e. **four frames**, so it bubbles.
+
+**Animation.** The chamber is the only room with continuous motion, saved deliberately for the
+ending:
+
+- A **binding sigil** turning on the floor beneath the prison — inline SVG, two rings
+  counter-rotating at 44s and 31s so it reads as machinery rather than decoration. Drawn rather
+  than sprited because a pixel sprite rotated off-axis shimmers.
+- **Motes** lifting off the sigil — 14 CSS particles on staggered delays and durations.
+
+Both are pure CSS over existing assets: no new art, and nothing for the engine to know about.
+
 ### 2026-08-30 — Portals always glow
 
 Settled: portals and the prison glow permanently. No dimmed "dormant" look. Every attempt to

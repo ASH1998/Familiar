@@ -7,6 +7,7 @@
 
 import { FAMILIARS } from "../engine/familiars.js";
 import { progressLine } from "../engine/score.js";
+import { PRISON_AT } from "../engine/rooms/chamber.js";
 import { type GameState, room } from "../engine/state.js";
 import { TILE, spriteAt } from "./sprites.js";
 
@@ -83,6 +84,20 @@ function lightPool(tx: number, ty: number, colour: string, radius: number, stren
   el.style.opacity = String(strength);
   return el;
 }
+
+/**
+ * The binding sigil turning under the prison. Drawn rather than sprited so it can rotate
+ * cleanly — a pixel sprite rotated off-axis shimmers badly.
+ */
+const RITUAL_SVG = `<svg viewBox="0 0 200 200" aria-hidden="true">
+  <g fill="none" stroke="#b07cff" stroke-width="1.4" opacity="0.75">
+    <circle cx="100" cy="100" r="92"/>
+    <circle cx="100" cy="100" r="70" stroke-dasharray="7 11"/>
+    <circle cx="100" cy="100" r="44" stroke-dasharray="3 9"/>
+    <polygon points="100,16 173,142 27,142"/>
+    <polygon points="100,184 27,58 173,58" opacity="0.6"/>
+  </g>
+</svg>`;
 
 /** Deterministic floor variation — same tile always gets the same texture. */
 function floorKey(x: number, y: number): string {
@@ -238,6 +253,31 @@ export function renderRoom(state: GameState, h: ViewHandlers): void {
     const ty = Math.floor((ev.clientY - box.top) / (TILE * sy));
     if (tx >= 0 && ty >= 0 && tx < r.size.x && ty < r.size.y) h.onMove(tx, ty);
   };
+
+  // The Familiar Chamber is staged rather than merely dressed: a bound sigil turning on the
+  // floor beneath the prison, and motes rising off it. Both are CSS — no extra sprites, and
+  // they give the final room the only continuous motion in the game.
+  if (r.id === "chamber") {
+    const circle = document.createElement("div");
+    circle.className = "ritual";
+    circle.style.left = `${(PRISON_AT.x + 1) * TILE}px`;
+    circle.style.top = `${(PRISON_AT.y + 1) * TILE + TILE / 2}px`;
+    circle.innerHTML = RITUAL_SVG;
+    stage.appendChild(circle);
+
+    const motes = document.createElement("div");
+    motes.className = "motes";
+    motes.style.left = `${(PRISON_AT.x + 1) * TILE}px`;
+    motes.style.top = `${(PRISON_AT.y + 1) * TILE}px`;
+    for (let i = 0; i < 14; i++) {
+      const m = document.createElement("i");
+      m.style.left = `${(i * 37) % 200 - 100}px`;
+      m.style.animationDelay = `${(i * 0.47) % 6}s`;
+      m.style.animationDuration = `${5 + ((i * 13) % 40) / 10}s`;
+      motes.appendChild(m);
+    }
+    stage.appendChild(motes);
+  }
 
   // The wight. The human can see exactly where it is and which way it lies — which is the
   // whole reason `wards_sense` deliberately reports distance and not bearing.

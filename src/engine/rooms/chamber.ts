@@ -14,8 +14,14 @@ import { type GameState, type RoomState, log, room, decor } from "../state.js";
 import { type ToolDef, str } from "../tools.js";
 import { allow, guard, refuse, spendEnergy } from "../turn.js";
 
-/** Where the prison stands. The human must reach this tile — no tool can put them there. */
-export const PRISON_AT = { x: 6, y: 2 };
+/**
+ * Where the prison stands. The human must reach this tile — no tool can put them there.
+ *
+ * Row 3, not 2: the exit door is drawn into the back wall at the room's centre column and
+ * occupies y 32-128, while the 64px prison sprite anchored at row 2 spans y 64-192. They
+ * overlapped by a full tile. At row 3 the prison starts exactly where the door ends.
+ */
+export const PRISON_AT = { x: 6, y: 3 };
 /** Manhattan distance within which the adventurer counts as "at the prison". */
 const REACH = 2;
 
@@ -58,11 +64,20 @@ export function create(): RoomState {
     title: "The Familiar Chamber",
     size: { x: 13, y: 9 },
     props: [
+      // The finale gets the heaviest dressing in the game: this is where the dungeon has
+      // been keeping something, and it should look like a place built around a prisoner.
       ...decor([
-        ["pillar", 0, 3], ["pillar", 11, 3],
-        ["pillar_fallen", 2, 7], ["pillar_fallen", 9, 7],
-        ["coffin_1", 1, 4], ["coffin_2", 11, 4],
-        ["skulls", 4, 3], ["skull_1", 8, 3], ["rubble", 6, 6],
+        ["pillar", 0, 4], ["pillar", 11, 4],
+        ["pillar_fallen", 2, 8], ["pillar_fallen", 9, 8],
+        ["coffin_1", 0, 7], ["coffin_2", 12, 7],
+        ["coffin_1", 1, 2], ["coffin_2", 11, 2],
+        ["chains", 4, 2], ["chains", 8, 2], ["chains", 5, 2], ["chains", 7, 2],
+        ["cobweb", 0, 2], ["cobweb", 12, 2],
+        ["cauldron", 3, 7], ["cauldron", 9, 7],
+        ["skulls", 3, 4], ["skull_1", 9, 4],
+        ["skulls", 5, 8], ["skull_1", 7, 8],
+        ["bone_pile", 2, 5], ["bone_pile", 10, 5],
+        ["rubble", 4, 6], ["rubble", 8, 6], ["stone", 6, 8],
       ]),
       {
         id: "prison",

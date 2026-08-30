@@ -220,6 +220,25 @@
   "h": 16,
   "frames": 2
  },
+ "chains": {
+  "src": "/art/chains.png",
+  "w": 16,
+  "h": 32,
+  "frames": 1
+ },
+ "cobweb": {
+  "src": "/art/cobweb.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "cauldron": {
+  "src": "/art/cauldron.png",
+  "w": 16,
+  "h": 16,
+  "frames": 4,
+  "fps": 6
+ },
  "player_idle": {
   "src": "/art/player_idle.png",
   "w": 48,

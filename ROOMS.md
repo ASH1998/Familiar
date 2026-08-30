@@ -165,8 +165,12 @@ The adventurer must be standing at the prison."*
 
 ### Assets
 
-`Spr_Void_Portal_strip7` for the prison · `brazier` ×3 as the seals (lit = intact) ·
-`familiar_idle` rendered inside the portal · chains from `art/tiles/decorative.png` if time allows.
+`Spr_Void_Portal_strip7` for the prison (row 3 — row 2 overlaps the exit door) · `brazier` ×3 as
+the seals · chains, cobwebs, coffins and bubbling cauldrons as dressing.
+
+Staged with two CSS-only effects, and the only continuous motion in the game: a counter-rotating
+**binding sigil** on the floor under the prison (inline SVG — a rotated pixel sprite shimmers),
+and **motes** rising off it.
 
 ---
 
