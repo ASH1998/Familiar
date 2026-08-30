@@ -107,6 +107,55 @@
   "h": 64,
   "frames": 1
  },
+ "furnace_fire": {
+  "src": "/art/furnace_fire.png",
+  "w": 64,
+  "h": 96,
+  "frames": 15,
+  "fps": 12
+ },
+ "boiler": {
+  "src": "/art/boiler.png",
+  "w": 64,
+  "h": 64,
+  "frames": 1
+ },
+ "barrel": {
+  "src": "/art/barrel.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "crates": {
+  "src": "/art/crates.png",
+  "w": 32,
+  "h": 64,
+  "frames": 1
+ },
+ "tools_rack": {
+  "src": "/art/tools_rack.png",
+  "w": 32,
+  "h": 48,
+  "frames": 1
+ },
+ "tools_small": {
+  "src": "/art/tools_small.png",
+  "w": 32,
+  "h": 32,
+  "frames": 1
+ },
+ "logs": {
+  "src": "/art/logs.png",
+  "w": 48,
+  "h": 48,
+  "frames": 1
+ },
+ "workbench": {
+  "src": "/art/workbench.png",
+  "w": 48,
+  "h": 48,
+  "frames": 1
+ },
  "prison": {
   "src": "/art/prison.png",
   "w": 64,

@@ -105,9 +105,15 @@ without blocking it, which is what makes it a choice rather than a puzzle gate.
 
 ### Assets
 
-`lever` (2-frame off/on) per valve · `art/world/bridges/spr_bridge_4.png` for the span ·
-`brazier` for the furnace · steam as CSS. Per ASSETS-MAP §3 the lab sheet needs a brass recolour;
-levers avoid that entirely and read correctly as valves at this scale.
+`lever` (2-frame off/on) per valve · `spr_bridge_4` for the span · **`spr_Traven_fire_strip15`
+(15 frames) as the furnace itself**, lighting the room · boiler, workbench, tools, crates,
+barrels, logs. Per ASSETS-MAP §3 the lab sheet would need a brass recolour; levers avoid that
+entirely and read correctly as valves at this scale.
+
+Each valve's **pipe is drawn to whatever it actually feeds**, and an open one runs bright with
+an animated flow plus CSS steam. Human-only by construction — the renderer never reports to a
+tool — so the human reads the room instead of reading `look` text, while the familiar still has
+only gauges.
 
 ---
 

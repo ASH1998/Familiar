@@ -926,3 +926,71 @@ button:disabled {
     transform: translateY(-190px) scale(1.15);
   }
 }
+
+/* --------------------------------------------------------- Furnace staging (Room 3) */
+
+/* Each valve's pipe, drawn to whatever it actually feeds. Human-only information: the
+   renderer never reports to a tool, so the familiar still cannot tell which is which. */
+.pipe {
+  position: absolute;
+  height: 5px;
+  margin-top: -2px;
+  transform-origin: 0 50%;
+  border-radius: 3px;
+  opacity: 0.28;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.pipe--live {
+  opacity: 0.9;
+  box-shadow: 0 0 12px currentColor;
+  animation: pipeFlow 1.1s linear infinite;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.55) 0 6px,
+    transparent 6px 18px
+  );
+  background-size: 24px 100%;
+}
+
+@keyframes pipeFlow {
+  to {
+    background-position: 24px 0;
+  }
+}
+
+/* Steam off an open valve. */
+.steam {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 75;
+  pointer-events: none;
+}
+
+.steam i {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(226, 236, 255, 0.5);
+  filter: blur(1px);
+  opacity: 0;
+  animation: steamRise 1.9s ease-out infinite;
+}
+
+@keyframes steamRise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  20% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px) scale(2.1);
+  }
+}

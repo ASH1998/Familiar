@@ -77,6 +77,24 @@ Plan: [PLAN.md](PLAN.md) · Assets: [ASSETS-MAP.md](ASSETS-MAP.md) · Setup: [RE
 
 ## Log
 
+### 2026-08-30 — Furnace staged
+
+It was the blandest room: three levers on a floor. Now it reads as a working place.
+
+- **The furnace burns** — `spr_Traven_fire_strip15`, a 15-frame animation, and it casts light
+  like anything else that glows (adding it to `ALWAYS_GLOWS` — a fire that lit nothing was the
+  same bug I had just fixed for the portals).
+- Boiler, workbench, tool rack, crates, barrels, logs, cobwebs.
+- **Pipes drawn from each valve to whatever it actually feeds.** An open valve's pipe runs
+  bright with an animated flow and vents CSS steam.
+
+The pipes are worth calling out: they are human-only information by construction — the renderer
+never reports to a tool — and they turn the human's job from reading `look` text into *seeing
+the room*, which is what being the eyes should feel like. The familiar still has only gauges.
+
+Layout fix caught in the same pass: the 64x96 furnace at x=6 overlapped the broken span at
+(5,2). Moved to x=9.
+
 ### 2026-08-30 — Familiar Chamber: overlap fix + staging
 
 **The prison overlapped the exit door.** Both sat in the centre column: the door is drawn into

@@ -38,10 +38,21 @@ export function create(): RoomState {
     title: "The Furnace",
     size: { x: 13, y: 9 },
     props: [
+      // A working room, not another stone chamber: the furnace burning at the back, a boiler
+      // beside it, and the clutter of somewhere that was used.
       ...decor([
-        ["pillar", 0, 4], ["pillar", 11, 4],
-        ["rock_pile", 1, 7], ["rubble", 10, 7], ["stone", 7, 7],
-        ["bone_pile", 11, 3], ["skulls", 2, 3],
+        // Furnace on the right, clear of the broken span at (5,2) — a 64x96 sprite at x=6
+        // overlapped the bridge outright.
+        ["furnace_fire", 9, 3, "The furnace. It has been burning down here longer than anyone has been alive."],
+        ["boiler", 11, 3, "A riveted boiler, ticking with heat."],
+        ["workbench", 1, 3, "A workbench, scattered with cold tools."],
+        ["tools_rack", 0, 3], ["tools_small", 2, 4],
+        ["crates", 12, 6], ["barrel", 3, 4], ["barrel", 8, 8],
+        ["logs", 3, 7], ["logs", 9, 8],
+        ["pillar", 0, 6], ["pillar", 11, 6],
+        ["rock_pile", 1, 8], ["rubble", 10, 8], ["stone", 7, 8],
+        ["bone_pile", 12, 6], ["skulls", 2, 6],
+        ["cobweb", 0, 2], ["cobweb", 12, 2],
       ]),
       ...VALVE_IDS.map((id, i) => ({
         id: `valve_${id}`,

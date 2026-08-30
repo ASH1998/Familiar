@@ -52,7 +52,13 @@ const SIGIL_SVG: Record<string, string> = {
  * broken. Charging one makes it blaze; the difference has to stay unmistakable, since telling
  * lit from dormant is the human's job.
  */
-const ALWAYS_GLOWS = new Set(["portal_ice", "portal_nature", "portal_fire", "prison"]);
+const ALWAYS_GLOWS = new Set([
+  "portal_ice",
+  "portal_nature",
+  "portal_fire",
+  "prison",
+  "furnace_fire",
+]);
 
 const PROP_LIGHT: Record<string, string> = {
   portal_ice: "rgba(96,208,255,0.55)",
@@ -60,6 +66,7 @@ const PROP_LIGHT: Record<string, string> = {
   portal_fire: "rgba(255,150,70,0.55)",
   prison: "rgba(180,110,255,0.55)",
   brazier: "rgba(255,176,72,0.5)",
+  furnace_fire: "rgba(255,140,50,0.65)",
   statue_1: "rgba(255,230,170,0.45)",
   statue_2: "rgba(255,230,170,0.45)",
   statue_3: "rgba(255,230,170,0.45)",
@@ -253,6 +260,51 @@ export function renderRoom(state: GameState, h: ViewHandlers): void {
     const ty = Math.floor((ev.clientY - box.top) / (TILE * sy));
     if (tx >= 0 && ty >= 0 && tx < r.size.x && ty < r.size.y) h.onMove(tx, ty);
   };
+
+  // The Furnace: draw each valve's pipe running to whatever it actually feeds, and vent
+  // steam from any valve that is open. Both are human-only information by construction — the
+  // renderer never reports to a tool — and they turn the human's job from reading `look` text
+  // into seeing the room, which is the whole point of them being the eyes.
+  if (r.id === "furnace") {
+    const PIPE_TO: Record<string, { x: number; y: number; hue: string }> = {
+      A: { x: 6, y: 8, hue: "#e0603f" }, // along the walkway
+      B: { x: 6, y: 2, hue: "#6df5a0" }, // out to the span
+      C: { x: 12, y: 5, hue: "#7a6f8f" }, // into the wall
+    };
+    for (const p of r.props) {
+      const v = p.flags["valve"];
+      if (typeof v !== "string") continue;
+      const to = PIPE_TO[v]!;
+      const pipe = document.createElement("div");
+      pipe.className = "pipe";
+      const x1 = p.at.x * TILE + TILE / 2;
+      const y1 = p.at.y * TILE + TILE / 2;
+      const x2 = to.x * TILE + TILE / 2;
+      const y2 = to.y * TILE + TILE / 2;
+      const len = Math.hypot(x2 - x1, y2 - y1);
+      pipe.style.left = `${x1}px`;
+      pipe.style.top = `${y1}px`;
+      pipe.style.width = `${len}px`;
+      pipe.style.transform = `rotate(${Math.atan2(y2 - y1, x2 - x1)}rad)`;
+      pipe.style.background = to.hue;
+      if (p.flags["open"] === true) pipe.classList.add("pipe--live");
+      stage.appendChild(pipe);
+
+      if (p.flags["open"] === true) {
+        const steam = document.createElement("div");
+        steam.className = "steam";
+        steam.style.left = `${x1}px`;
+        steam.style.top = `${y1}px`;
+        for (let i = 0; i < 5; i++) {
+          const s = document.createElement("i");
+          s.style.animationDelay = `${i * 0.36}s`;
+          s.style.left = `${(i % 3) * 8 - 8}px`;
+          steam.appendChild(s);
+        }
+        stage.appendChild(steam);
+      }
+    }
+  }
 
   // The Familiar Chamber is staged rather than merely dressed: a bound sigil turning on the
   // floor beneath the prison, and motes rising off it. Both are CSS — no extra sprites, and

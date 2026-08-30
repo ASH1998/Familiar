@@ -68,6 +68,15 @@ const SPRITES = {
   // Levers stand in for valve wheels: a 2-frame off/on sprite is exactly a valve, and it
   // avoids the brass-recolour pass the sci-fi lab sheet would need (ASSETS-MAP.md §3 Room 3).
   bridge: [`${ART}/world/bridges/spr_bridge_4.png`, { w: 64, h: 64, frames: 1 }],
+  // The furnace itself: a 15-frame fire, the biggest animation in the game.
+  furnace_fire: [`${ART}/interior/tavern/spr_Traven_fire_strip15.png`, { w: 64, h: 96, frames: 15, fps: 12 }],
+  boiler: [`${ART}/interior/tavern/spr_beer_barrel.png`, { w: 64, h: 64, frames: 1 }],
+  barrel: [`${ART}/interior/store/spr_barrel.png`, { w: 32, h: 32, frames: 1 }],
+  crates: [`${ART}/interior/store/spr_shop_crates.png`, { w: 32, h: 64, frames: 1 }],
+  tools_rack: [`${ART}/interior/store/spr_tools_1.png`, { w: 32, h: 48, frames: 1 }],
+  tools_small: [`${ART}/interior/store/spr_tools_2.png`, { w: 32, h: 32, frames: 1 }],
+  logs: [`${ART}/world/props/spr_logs.png`, { w: 48, h: 48, frames: 1 }],
+  workbench: [`${ART}/world/props/spr_table.png`, { w: 48, h: 48, frames: 1 }],
 
   // --- Room 4: the familiar chamber --------------------------------------------------------
   prison: [`${ART}/portals/Spr_Void_Portal_strip7.png`, { w: 64, h: 64, frames: 7 }],
