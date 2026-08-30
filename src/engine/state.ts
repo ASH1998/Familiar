@@ -85,8 +85,12 @@ export interface GameState {
   lastMisstep?: string;
   /** Total tool calls, for the end-of-run summary. */
   toolCalls?: number;
+  /** Refused calls. Not penalised — refusals teach the rules — but worth reporting. */
+  wastedCalls?: number;
   /** Transient visual event for the renderer. `seq` increments so repeats replay. */
   fx?: { kind: "hit" | "vent"; seq: number };
+  /** Log index the familiar has already heard, so `listen` returns only what is new. */
+  heardUpTo?: number;
 }
 
 /**

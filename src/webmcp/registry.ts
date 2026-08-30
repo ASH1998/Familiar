@@ -13,6 +13,7 @@
  */
 
 import { globalTools } from "../engine/global.js";
+import { wasted } from "../engine/score.js";
 import { wardTools } from "../engine/wight.js";
 import { toolsFor } from "../engine/game.js";
 import type { GameState, RoomId } from "../engine/state.js";
@@ -76,6 +77,7 @@ export function callTool(name: string, input: Record<string, unknown>): string {
   const state = opts!.getState();
   state.toolCalls = (state.toolCalls ?? 0) + 1;
   const result = def.run(state, input ?? {});
+  if (!result.ok) wasted(state);
   // Announce every successful acting call. Refusals and read-only lookups are not events —
   // banner-ing them would make the board flash constantly and mean nothing.
   if (result.ok && !def.readOnly) {
