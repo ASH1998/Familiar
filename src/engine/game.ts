@@ -42,6 +42,7 @@ export function createGame(
     lastTool: undefined,
     missteps: 0,
     toolCalls: 0,
+    heardUpTo: 0,
   };
 }
 

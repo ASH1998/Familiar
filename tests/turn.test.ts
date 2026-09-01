@@ -139,3 +139,29 @@ describe("gate puzzle", () => {
     }
   });
 });
+
+describe("the familiar can hear without ending its turn", () => {
+  it("returns only what the human has said since the last listen", () => {
+    const s = familiarTurn();
+    expect(tool("listen").run(s, {}).text).toMatch(/nothing new/i);
+
+    s.log.push({ source: "human", text: "Gate II is green, with a leaf beneath it." });
+    const heard = tool("listen").run(s, {});
+    expect(heard.text).toContain("leaf");
+
+    // Already consumed — a second listen must not replay it.
+    expect(tool("listen").run(s, {}).text).toMatch(/nothing new/i);
+  });
+
+  it("works outside the familiar's turn, so the agent is never deaf", () => {
+    const s = createGame("gates"); // HUMAN phase
+    s.log.push({ source: "human", text: "the left arch is burning" });
+    expect(tool("listen").run(s, {}).ok).toBe(true);
+  });
+
+  it("does not report the familiar's own speech back to it", () => {
+    const s = familiarTurn();
+    tool("speak_to_adventurer").run(s, { message: "Which arch is lit?" });
+    expect(tool("listen").run(s, {}).text).toMatch(/nothing new/i);
+  });
+});

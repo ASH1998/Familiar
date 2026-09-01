@@ -32,16 +32,62 @@ export interface Wight {
 }
 
 /**
+ * Expand a list of waypoints into every tile between them.
+ *
+ * Rooms declare a patrol as corners; without this the wight teleported 3-4 tiles per dungeon
+ * turn, which made `wards_sense` actively misleading — "5 paces away" could be adjacent on the
+ * next turn. A hazard the pair cannot plan around is noise, not pressure.
+ */
+function expand(waypoints: Vec2[]): Vec2[] {
+  const out: Vec2[] = [];
+  for (let i = 0; i < waypoints.length; i++) {
+    const a = waypoints[i]!;
+    const b = waypoints[(i + 1) % waypoints.length]!;
+    out.push({ ...a });
+    let cur = { ...a };
+    while (cur.x !== b.x || cur.y !== b.y) {
+      cur = {
+        x: cur.x + Math.sign(b.x - cur.x),
+        y: cur.y + Math.sign(b.y - cur.y),
+      };
+      if (cur.x === b.x && cur.y === b.y) break; // the next iteration pushes it as `a`
+      out.push({ ...cur });
+    }
+  }
+  return out;
+}
+
+/**
  * Put a wight on this room's patrol, or clear it if the room has none. Called on entry, so
  * re-entering a chamber resets the hazard rather than leaving it wherever it was.
  */
 export function spawnWight(s: GameState): void {
-  const path = room(s).patrol;
-  if (!path || path.length === 0) {
+  const waypoints = room(s).patrol;
+  if (!waypoints || waypoints.length === 0) {
     delete s.wight;
     return;
   }
-  s.wight = { at: { ...path[0]! }, path: path.map((p) => ({ ...p })), step: 0, bound: 0 };
+  const path = expand(waypoints);
+  s.wight = { at: { ...path[0]! }, path, step: 0, bound: 0 };
+}
+
+/**
+ * How many dungeon turns until the wight is adjacent, walking its loop from where it stands.
+ * Returns null if it never gets within reach on this circuit — which is information the pair
+ * can act on, so it is worth being exact about.
+ */
+export function turnsUntilContact(s: GameState): number | null {
+  const w = s.wight;
+  if (!w) return null;
+  let step = w.step;
+  for (let n = 1; n <= w.path.length; n++) {
+    step = (step + 1) % w.path.length;
+    const at = w.path[step]!;
+    if (Math.max(Math.abs(at.x - s.player.x), Math.abs(at.y - s.player.y)) <= 1) {
+      return n + w.bound;
+    }
+  }
+  return null;
 }
 
 export const DIRECTIONS = ["north", "south", "east", "west"] as const;
@@ -102,9 +148,9 @@ export const wardTools: ToolDef[] = [
     title: "wards.sense",
     description:
       "Feel along the dungeon's ward network for anything moving in this chamber. Reports " +
-      "how far it stands from the adventurer, and whether it is bound. It cannot tell you " +
-      "which direction — the wards carry distance, not bearing. Ask the adventurer for that. " +
-      "Free; costs no energy.",
+      "how far it stands from the adventurer, how many dungeon turns until it reaches them, " +
+      "and whether it is bound. It cannot tell you which direction — the wards carry distance, " +
+      "not bearing. Ask the adventurer for that. Free; costs no energy.",
     readOnly: true,
     run(s) {
       const g = guard(s, true);
@@ -112,9 +158,19 @@ export const wardTools: ToolDef[] = [
       const w = s.wight;
       if (!w) return allow("The ward network is quiet. Nothing is moving in this chamber.");
       const d = distanceTo(w, s.player);
+      const eta = turnsUntilContact(s);
+      // Distance alone was not actionable, because the thing moves. Time-to-contact is the
+      // number the pair can actually plan against — and it is still not a bearing.
+      const warning =
+        eta === null
+          ? "On its present round it does not come within reach of them."
+          : eta === 1
+            ? "IT REACHES THEM ON THE NEXT DUNGEON TURN."
+            : `It reaches them in ${eta} dungeon turns if neither of them moves.`;
       return allow(
         `Something is moving on the wards. It stands ${d} pace${d === 1 ? "" : "s"} from the ` +
-          `adventurer.${w.bound > 0 ? ` It is bound for ${w.bound} more round(s).` : ""} ` +
+          `adventurer.${w.bound > 0 ? ` It is bound for ${w.bound} more round(s).` : ""}\n` +
+          `${warning}\n` +
           "The wards carry no bearing — ask the adventurer which way it lies from them.",
       );
     },

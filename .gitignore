@@ -3,4 +3,6 @@ dist/
 build/
 *.local
 .*/
+!/.openai/
+!/.openai/hosting.json
 .DS_Store

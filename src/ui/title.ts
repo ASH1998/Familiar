@@ -9,7 +9,7 @@
  */
 
 import { FAMILIARS, FAMILIAR_ORDER, type FamiliarId } from "../engine/familiars.js";
-import { TOTAL_CHAMBERS, type Score } from "../engine/score.js";
+import type { Note, Score } from "../engine/score.js";
 import { paint } from "./sprites.js";
 
 const TAGLINE = [
@@ -107,7 +107,7 @@ export function showTitle(onStart: (id: FamiliarId) => void): void {
 }
 
 /** The closing card. Shown once the binding is released. */
-export function showEnding(final: Score, onRestart: () => void): void {
+export function showEnding(final: Score, breakdown: Note[], onRestart: () => void): void {
   const root = document.createElement("div");
   root.id = "title";
   root.classList.add("ending");
@@ -126,16 +126,22 @@ export function showEnding(final: Score, onRestart: () => void): void {
     "<div class='ending-credit'>Human + Familiar</div>";
   inner.appendChild(tag);
 
+  // Plain-language breakdown rather than a bare number: the score exists to tell the pair
+  // what they did well, and "412 points" says nothing on its own.
   const sheet = document.createElement("div");
   sheet.className = "score-sheet";
-  const rows: Array<[string, string]> = [
-    ["Chambers", `${final.chambers} / ${TOTAL_CHAMBERS}`],
-    ["Rounds", String(final.rounds)],
-    ["Tool calls", String(final.toolCalls)],
-    ["Missteps", String(final.missteps)],
-  ];
   sheet.innerHTML =
-    rows.map(([k, v]) => `<div class="score-row"><span>${k}</span><b>${v}</b></div>`).join("") +
+    breakdown
+      .map(
+        (n) =>
+          `<div class="score-note">` +
+          `<div class="score-note-head"><span>${n.label}</span>` +
+          (n.points !== 0
+            ? `<b class="${n.points > 0 ? "up" : "down"}">${n.points > 0 ? "+" : ""}${n.points}</b>`
+            : `<b class="flat">—</b>`) +
+          `</div><div class="score-note-detail">${n.detail}</div></div>`,
+      )
+      .join("") +
     `<div class="score-row score-row--total"><span>Score</span><b>${final.points}</b></div>` +
     `<div class="score-rank">${final.rank}</div>`;
   inner.appendChild(sheet);

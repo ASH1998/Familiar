@@ -7,7 +7,7 @@
 
 import { ROOM_ORDER, createGame } from "./engine/game.js";
 import { atPrison } from "./engine/rooms/chamber.js";
-import { score } from "./engine/score.js";
+import { notes, score } from "./engine/score.js";
 import { spawnWight } from "./engine/wight.js";
 import { FAMILIARS, type FamiliarId } from "./engine/familiars.js";
 import { type GameState, type RoomId, log, prop, room } from "./engine/state.js";
@@ -140,7 +140,7 @@ function rerender(): void {
     log(state, { source: "system", text: "THE FAMILIAR IS FREE" });
     state.won = true;
     // Let the last tool response land before the card covers the screen.
-    setTimeout(() => showEnding(score(state), () => void restart()), 1400);
+    setTimeout(() => showEnding(score(state), notes(state), () => void restart()), 1400);
   }
   render(state, activeToolNames(), handlers);
 }

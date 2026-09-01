@@ -10,7 +10,13 @@ import { describe, expect, it } from "vitest";
 import { createGame } from "../src/engine/game.js";
 import type { GameState } from "../src/engine/state.js";
 import { advance, endHumanTurn } from "../src/engine/turn.js";
-import { bearingFrom, spawnWight, stepWight, wardTools } from "../src/engine/wight.js";
+import {
+  bearingFrom,
+  spawnWight,
+  stepWight,
+  turnsUntilContact,
+  wardTools,
+} from "../src/engine/wight.js";
 
 const tool = (n: string) => wardTools.find((t) => t.name === n)!;
 
@@ -43,13 +49,19 @@ describe("the dungeon takes a turn", () => {
   });
 
   it("walks a closed loop, so both players can plan around it", () => {
+    // Compared against the *expanded* path, not the waypoint list: rooms declare corners and
+    // `spawnWight` fills in every tile between them.
     const s = withWight();
     const seen = new Set<string>();
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 40; i++) {
       stepWight(s);
       seen.add(`${s.wight!.at.x},${s.wight!.at.y}`);
     }
-    expect(seen.size).toBeLessThanOrEqual(s.rooms.library.patrol!.length);
+    expect(seen.size).toBeLessThanOrEqual(s.wight!.path.length);
+    // And it returns to where it started — a loop, not a wander.
+    const start = { ...s.wight!.path[0]! };
+    for (let i = 0; i < s.wight!.path.length; i++) stepWight(s);
+    expect(s.wight!.at).toEqual(start);
   });
 
   it("costs the adventurer their turn on contact, and does not damage them", () => {
@@ -106,5 +118,46 @@ describe("the wight keeps the asymmetry", () => {
     expect(s.wight!.bound).toBe(0);
     stepWight(s);
     expect(s.wight!.at).not.toEqual(at);
+  });
+});
+
+describe("the wight moves predictably", () => {
+  it("moves exactly one tile per dungeon turn", () => {
+    // Rooms declare patrols as corners. Before expansion the wight teleported 3-4 tiles a
+    // turn, which made `wards_sense` misleading: "5 paces" could be adjacent next turn.
+    for (const id of ["library", "gates", "furnace"] as const) {
+      const s = withWight(id);
+      let prev = { ...s.wight!.at };
+      for (let i = 0; i < 20; i++) {
+        stepWight(s);
+        const hop = Math.max(
+          Math.abs(s.wight!.at.x - prev.x),
+          Math.abs(s.wight!.at.y - prev.y),
+        );
+        expect(hop, `${id} hopped ${hop} tiles in one turn`).toBeLessThanOrEqual(1);
+        prev = { ...s.wight!.at };
+      }
+    }
+  });
+
+  it("reports a time-to-contact that actually holds", () => {
+    const s = withWight();
+    const eta = turnsUntilContact(s);
+    if (eta === null) return; // never reaches on this circuit — also valid
+    // Step exactly that many turns and it should be adjacent.
+    for (let i = 0; i < eta; i++) stepWight(s);
+    const d = Math.max(
+      Math.abs(s.wight!.at.x - s.player.x),
+      Math.abs(s.wight!.at.y - s.player.y),
+    );
+    expect(d, `predicted contact in ${eta} turns, distance was ${d}`).toBeLessThanOrEqual(1);
+  });
+
+  it("still never leaks a bearing, even while warning about contact", () => {
+    const s = withWight();
+    endHumanTurn(s);
+    const out = tool("wards_sense").run(s, {}).text;
+    expect(out).toMatch(/dungeon turn|does not come within reach/i);
+    expect(out).not.toMatch(/\b(north|south|east|west)\b/);
   });
 });

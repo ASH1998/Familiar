@@ -49,8 +49,9 @@ export const globalTools: ToolDef[] = [
           "",
           "GETTING STARTED",
           "  1. speak_to_adventurer — greet them and ask what they can see.",
-          "  2. Use the chamber's inspect tools to learn what the mechanisms need.",
-          "  3. Ask for the specific detail you are missing, then act on their answer.",
+          "  2. listen — hear their reply. You do NOT need to end your turn to do this.",
+          "  3. Use the chamber's inspect tools to learn what the mechanisms need.",
+          "  4. Ask for the detail you are missing, listen again, then act on their answer.",
           "",
           "Your goal is the far door of each chamber. There are four. The last one holds",
           "something that concerns you directly.",
@@ -112,6 +113,36 @@ export const globalTools: ToolDef[] = [
       if (!message) return refuse("Say something — the message was empty.");
       log(s, { source: "familiar", text: message });
       return allow("The adventurer hears you.");
+    },
+  },
+
+  {
+    name: "listen",
+    title: "familiar.listen",
+    description:
+      "Listen for what the adventurer has said since you last checked. Use this after asking " +
+      "them something — you do NOT have to end your turn to hear an answer. Ask, listen, then " +
+      "act, all within the same turn. Free; costs no energy.",
+    readOnly: true,
+    run(s) {
+      // Not phase-gated. The familiar must be able to hear at any point, or the loop
+      // degenerates into "ask, pass, wait a whole round, act" — which is most of a turn
+      // spent on nothing.
+      const since = s.heardUpTo ?? 0;
+      const said = s.log
+        .map((e, i) => ({ e, i }))
+        .filter(({ e, i }) => i >= since && e.source === "human");
+      s.heardUpTo = s.log.length;
+
+      if (said.length === 0) {
+        return allow(
+          "The adventurer has said nothing new. If you have asked them something, wait — they " +
+            "are looking. If you have not, ask: they can see everything you cannot.",
+        );
+      }
+      return allow(
+        "The adventurer says:\n" + said.map(({ e }) => `  "${e.text}"`).join("\n"),
+      );
     },
   },
 
